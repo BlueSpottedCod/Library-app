@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Библиотечная система</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Форма выбора режима -->
+    <div id="login-container" class="login-container">
+        <div class="login-box">
+            <h2>📚 Библиотечная система</h2>
+            <h3>Выберите режим входа</h3>
+            
+            <button onclick="showAdminLogin()" class="mode-btn admin-btn">
+                👨‍💼 Администратор
+            </button>
+            
+            <button onclick="loginAsUser()" class="mode-btn user-btn">
+                📘 Войти как читатель
+            </button>
+            
+            <div id="admin-login-form" style="display: none; margin-top: 20px;">
+                <div class="input-group">
+                    <input type="text" id="username" placeholder="Логин" autocomplete="off">
+                </div>
+                <div class="input-group">
+                    <input type="password" id="password" placeholder="Пароль">
+                </div>
+                <button onclick="login()" class="login-submit">Войти</button>
+                <button onclick="hideAdminLogin()" class="cancel-btn">Отмена</button>
+                <div id="login-error" class="error-message"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Основное приложение (администратор) -->
+    <div id="admin-app" style="display: none;">
+        <div class="container">
+            <div class="header">
+                <h1>📚 Управление библиотечным фондом (Администратор)</h1>
+                <div>
+                    <span class="user-badge">👨‍💼 Администратор</span>
+                    <button onclick="logout()" class="logout-btn">Выйти</button>
+                </div>
+            </div>
+            
+            <div class="tabs">
+                <button class="tab-btn active" onclick="showTab('books')">Книги</button>
+                <button class="tab-btn" onclick="showTab('readers')">Читатели</button>
+                <button class="tab-btn" onclick="showTab('loans')">Выдача книг</button>
+            </div>
+            
+            <!-- Вкладка Книги (админ) -->
+            <div id="books-tab" class="tab-content active">
+                <div class="add-form">
+                    <h3>Добавить книгу</h3>
+                    <input type="text" id="book-title" placeholder="Название книги" required>
+                    <input type="text" id="book-author" placeholder="Автор" required>
+                    <input type="number" id="book-year" placeholder="Год издания">
+                    <input type="text" id="book-isbn" placeholder="ISBN">
+                    <input type="number" id="book-quantity" placeholder="Количество" value="1">
+                    <button onclick="addBook()">Добавить книгу</button>
+                </div>
+                
+                <div class="list">
+                    <h3>Список книг</h3>
+                    <div id="admin-books-list"></div>
+                </div>
+            </div>
+            
+            <!-- Вкладка Читатели (админ) -->
+            <div id="readers-tab" class="tab-content">
+                <div class="add-form">
+                    <h3>Добавить читателя</h3>
+                    <input type="text" id="reader-name" placeholder="ФИО" required>
+                    <input type="email" id="reader-email" placeholder="Email">
+                    <input type="text" id="reader-phone" placeholder="Телефон">
+                    <button onclick="addReader()">Добавить читателя</button>
+                </div>
+                
+                <div class="list">
+                    <h3>Список читателей</h3>
+                    <div id="admin-readers-list"></div>
+                </div>
+            </div>
+            
+            <!-- Вкладка Выдача книг (админ) -->
+            <div id="loans-tab" class="tab-content">
+                <div class="add-form">
+                    <h3>Выдать книгу</h3>
+                    <select id="loan-book"></select>
+                    <select id="loan-reader"></select>
+                    <div class="date-input-group">
+                        <label>Срок возврата:</label>
+                        <input type="date" id="loan-due-date">
+                        <div class="quick-dates">
+                            <button type="button" onclick="setDueDate(7)">7 дней</button>
+                            <button type="button" onclick="setDueDate(14)">14 дней</button>
+                            <button type="button" onclick="setDueDate(30)">30 дней</button>
+                            <button type="button" onclick="setDueDate(60)">60 дней</button>
+                        </div>
+                    </div>
+                    <button onclick="createLoan()">Выдать книгу</button>
+                </div>
+                
+                <div class="list">
+                    <h3>Активные выдачи</h3>
+                    <div id="admin-loans-list"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Пользовательский режим (только просмотр) -->
+    <div id="user-app" style="display: none;">
+        <div class="container">
+            <div class="header">
+                <h1>📚 Библиотечный фонд (Режим просмотра)</h1>
+                <div>
+                    <span class="user-badge user-mode">📘 Режим читателя</span>
+                    <button onclick="logoutToMain()" class="logout-btn">Выйти</button>
+                </div>
+            </div>
+            
+            <div class="info-message">
+                ℹ️ В режиме читателя доступен только просмотр книг, доступных в библиотеке.
+            </div>
+            
+            <div class="list">
+                <h3>Доступные книги</h3>
+                <div id="user-books-list"></div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="js/main.js"></script>
+</body>
+</html>
